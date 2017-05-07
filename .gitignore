@@ -1,1 +1,12 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
+
+# Pastas com os arquivos de suporte
+bin/**
+exemplos/**
+include/**
+
+# Pasta com o .a
+lib/**
+
+# Arquivos extras
+*.pdf
