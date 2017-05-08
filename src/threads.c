@@ -20,3 +20,12 @@
 #include "../support.h"
 #include "../cdata.h"
 #include "../cthread.h"
+
+int cidentify(char *name, int size){
+	char devs[] = {"Ana Paula Mello 260723\nArateus Meneses 242260\nCaio Rodrigues 261578\0"};
+    name[size] = '\0';
+    if(strncpy(name, devs, size))
+        return 0;
+    else
+        return -1;
+}
