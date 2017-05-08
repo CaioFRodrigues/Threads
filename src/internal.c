@@ -20,3 +20,32 @@
 #include "../support.h"
 #include "../cdata.h"
 #include "../cthread.h"
+
+#define FILA_SIZE 4 
+// Criação e inicialização da fila de threads
+FILA2 fila_threads[FILA_SIZE];
+for (int i = 0; i < FILA_SIZE; i++){
+	fila_threads[FILA_SIZE] = CreateFila2;
+} 
+
+
+//Função control_thread(): Manuseia próxima thread a ser executada e checa a fila de bloqueios, garantindo 
+control_thread(){
+
+}
+
+
+// Função choose_thread(s_TCB* returning_thread): Escolhe a thread a ser executada a partir da fila de aptos e remove ela da fila;
+// Se a função for executada com sucesso, ela retorna 1, senão, 0
+// returning_thread: Ponteiro que estará apontando para a thread no final da função
+int choose_thread(s_TCB* retuning_thread){
+
+	for (int i = 0; i < FILA_SIZE;i++ )
+		if(FirstFila2(&fila_threads[i])){
+			s_TCB * retuning_struct = GetatIteratorFila2(&fila_threads[i]);
+			return 1;
+	}
+	return 0;
+}
+
+control_blocked();
