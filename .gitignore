@@ -3,7 +3,9 @@
 # Pastas com os arquivos de suporte
 bin/**
 exemplos/**
-include/**
+include/cdata.h
+include/cthread.h
+include/support.h
 
 # Pasta com o .a
 lib/**
