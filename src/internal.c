@@ -31,7 +31,15 @@ for (int i = 0; i < FILA_SIZE; i++){
 
 //Função control_thread(): Manuseia próxima thread a ser executada e checa a fila de bloqueios, garantindo 
 control_thread(){
+	//Checa a lista de bloqueios, para ver se alguma informação deve ser atualizada
 
+	
+	//Decide a próxima thread a ser executada
+	int return_flag = 0;
+	s_TCB* next_thread;
+	if (choose_thread (next_thread))
+		return_flag++;
+	
 }
 
 
@@ -41,7 +49,8 @@ control_thread(){
 int choose_thread(s_TCB* retuning_thread){
 
 	for (int i = 0; i < FILA_SIZE;i++ )
-		if(FirstFila2(&fila_threads[i])){
+		if(FirstFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
+										   //caso não haja na primeira fila, tenta a próxima fila até o final das filas
 			s_TCB * retuning_struct = GetatIteratorFila2(&fila_threads[i]);
 			return 1;
 	}
