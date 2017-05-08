@@ -12,6 +12,6 @@ int free();
 
 int control_thread();
 
-s_TCB choose_thread();
+int choose_thread(s_TCB* retuning_thread);
 
 int control_blocked();
