@@ -6,8 +6,8 @@
 *   Trabalho Prático I - Biblioteca de Threads cthreads 17.1
 *
 *   Ana Paula Mello - 260723 <apcomello@gmail.com>
-*   Arateus Meneses - 242260 <caio_f.r@hotmail.com>
-*   Caio Rodrigues -261578  <arateus.meneses@gmail.com>
+*   Arateus Meneses - 242260 <arateus.meneses@gmail.com>
+*   Caio Rodrigues -261578  <caio_f.r@hotmail.com>
 *
 *   I_am_the_future_test.c: primeiro arquivo de teste
 *
