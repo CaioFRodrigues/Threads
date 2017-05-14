@@ -16,20 +16,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../internal.h"
-#include "../support.h"
-#include "../cdata.h"
-#include "../cthread.h"
-#define NO_ARGUMENT 0
-#define MEM 64000
+#include <ucontext.h>
+#include "../include/internal.h"
+#include "../include/support.h"
+#include "../include/cdata.h"
+#include "../include/cthread.h"
 
+extern TCB_t main_thread;
+extern TCB_t current_thread;
+extern ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
+extern FILA2 fila_threads[FILA_SIZE];                        // escolher a próxima
 
-TCB_t main_thread;
-TCB_t current_thread;
-ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
-                                  // escolher a próxima
-int tidCounter = 1; // Thread Identifier Counter
-int init = 0; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
+extern int tidCounter; // Thread Identifier Counter
+extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
+
 
 
 int ccreate(void *(*start)(void *), void *arg, int prio)
@@ -42,19 +42,19 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
     }
 
 
-    if (init == 0)  //Primeira execução do programa
+    if (init_flag == 0)  //Primeira execução do programa
     {
         init();
     }
 
 
-    new_thread_context.uc_stack.ss_sp = malloc(MEM);
-    new_thread_context.uc_stack.ss_size = MEM;
-    new_thread_context.uc_link = choose_thread_context;
-    new_thread->state = choose_thread_context;
+    new_thread_context->uc_stack.ss_sp = malloc(MEM);
+    new_thread_context->uc_stack.ss_size = MEM;
+    new_thread_context->uc_link = &choose_thread_context;
+    new_thread->state = PROCST_APTO;
     new_thread->tid = ++tidCounter;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
-    new_thread->context = new_thread_context;
+    new_thread->context = *new_thread_context;
 
     choose_thread();
 

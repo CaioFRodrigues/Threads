@@ -7,11 +7,51 @@
 *
 *   versão 1.0 - 07/05/2017
 */
+#ifndef	__INTERNAL_H__
+#define	__INTERNAL_H__
 
-int free();
+#include <ucontext.h>
+#include "cdata.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <ucontext.h>
+
+#include "support.h"
+#include "cdata.h"
+#include "cthread.h"
+
+#define FILA_SIZE 4 
+#define TRUE 1
+#define FALSE 0
+#define NO_ARGUMENT 0
+#define MEM 64000
+#define	PROCST_CRIACAO	0
+#define	PROCST_APTO	1
+#define	PROCST_EXEC	2
+#define	PROCST_BLOQ	3
+#define	PROCST_TERMINO	4
+#define FILA_SIZE 4 
+#define TRUE 1
+#define FALSE 0
+
+TCB_t main_thread;
+TCB_t current_thread;
+ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
+FILA2 fila_threads[FILA_SIZE];                        // escolher a próxima
+
+int tidCounter = 1; // Thread Identifier Counter
+int init_flag = 0; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
+
+
+
+void init();
 
 int control_thread();
 
-int choose_thread(s_TCB* retuning_thread);
+void choose_thread();
 
 int control_blocked();
+
+void change_context(int fila, TCB_t *next_thread);
+
+#endif
