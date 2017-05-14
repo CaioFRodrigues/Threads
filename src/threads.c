@@ -29,3 +29,31 @@ int cidentify(char *name, int size){
     else
         return -1;
 }
+
+int csetprio(int tid, int prio){
+
+	int i=0, current_prio=0;
+	TCB_t * tested_thread = (TCB_t *) malloc(sizeof(TCB_t));
+
+	for (i=0; i<FILA_SIZE; i++){
+		while (TRUE){	// Enquanto houver threads na fila
+
+			*(tested_thread) = *(GetAtIteratorFila2(&fila_threads[i]));	//Guardando o conteudo, nao o ponteiro
+
+			if (tested_thread.tid == tid){
+				current_prio = tested_thread.ticket; // Necessario? Nao lembro por que fiz isso
+				tested_thread.ticket = prio;
+				//Muda a thread para a fila apropriada
+				DeleteAtIteratorFila2(&fila_threads[i]));
+				AppendFila2(fila_threads[tested_thread], &fila_threads[i]));
+				return 0;
+			}
+
+			if (NextFila2(fila_threads[i]) != 0) // Fila acabou ou esta vazia
+				break;
+		}
+	}
+
+	return -1;
+
+}
