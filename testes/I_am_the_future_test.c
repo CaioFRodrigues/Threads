@@ -27,6 +27,7 @@ void* func1(void* arg){
 }
 
 int main(){
+	printf ("OI");
 	int* arg = malloc(sizeof(int));
 
 	ccreate(func1, arg, 0);

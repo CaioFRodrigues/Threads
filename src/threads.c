@@ -34,6 +34,7 @@ extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca 
 
 int ccreate(void *(*start)(void *), void *arg, int prio)
 {
+    printf ("OI");
     TCB_t *new_thread = (TCB_t *) malloc(sizeof(TCB_t));
     ucontext_t *new_thread_context = (ucontext_t *) malloc(sizeof(ucontext_t));
 
