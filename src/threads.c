@@ -38,7 +38,7 @@ int csetprio(int tid, int prio){
 	for (i=0; i<FILA_SIZE; i++){
 		while (TRUE){	// Enquanto houver threads na fila
 
-			*(tested_thread) = *(GetAtIteratorFila2(&fila_threads[i]));	//Guardando o conteudo, nao o ponteiro
+			*(tested_thread) = (TCB_t *) *(GetAtIteratorFila2(&fila_threads[i]));	//Guardando o conteudo, nao o ponteiro
 
 			if (tested_thread.tid == tid){
 				current_prio = tested_thread.ticket; // Necessario? Nao lembro por que fiz isso
