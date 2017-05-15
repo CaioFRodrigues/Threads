@@ -16,7 +16,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../internal.h"
-#include "../support.h"
-#include "../cdata.h"
-#include "../cthread.h"
+#include "../include/internal.h"
+#include "../include/support.h"
+#include "../include/cdata.h"
+#include "../include/cthread.h"

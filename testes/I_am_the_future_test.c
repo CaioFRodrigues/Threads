@@ -23,6 +23,7 @@
 #include <ucontext.h>
 void* func1(void* arg){
 	printf ("OI");
+	return arg;
 }
 
 int main(){

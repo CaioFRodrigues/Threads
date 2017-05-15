@@ -20,8 +20,11 @@
 
 // Criação e inicialização da fila de threads
 
+extern int tidCounter; // Thread Identifier Counter
+extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi
 
-
+tidCounter = 1;
+init_flag = 0;
 void init(){
     
 	//Garante que não haverão duas inicializações
@@ -61,11 +64,11 @@ void init(){
 int control_thread(){	
 	//Decide a próxima thread a ser executada
 	choose_thread();
+	return 0;
 
 
 
 
-	
 }
 
 
