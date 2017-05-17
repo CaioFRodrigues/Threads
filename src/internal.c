@@ -76,7 +76,7 @@ int choose_thread(){
 
 	TCB_t * next_thread = (TCB_t *) malloc(sizeof(TCB_t));
 	for (int i = 0; i < FILA_SIZE;i++ )
-		if(!LastFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
+		if(!FirstFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
 										   //caso não haja na primeira fila, tenta a próxima fila até o final das filas
 
 			*next_thread = (*(TCB_t *) (GetAtIteratorFila2(&fila_threads[i])));
