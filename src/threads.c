@@ -34,7 +34,7 @@ extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca 
 
 int ccreate(void *(*start)(void *), void *arg, int prio)
 {
-    printf ("OI");
+    
     TCB_t *new_thread = (TCB_t *) malloc(sizeof(TCB_t));
     ucontext_t *new_thread_context = (ucontext_t *) malloc(sizeof(ucontext_t));
 
@@ -56,9 +56,15 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
     new_thread->tid = ++tidCounter;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
     new_thread->context = *new_thread_context;
+    insert_thread(prio, new_thread);
 
     choose_thread();
 
-    
+    return 0;
+}
+
+
+int cyield(){
+    choose_thread();
     return 0;
 }

@@ -31,8 +31,7 @@
 #define	PROCST_BLOQ	3
 #define	PROCST_TERMINO	4
 #define FILA_SIZE 4 
-#define TRUE 1
-#define FALSE 0
+
 
 TCB_t main_thread;
 TCB_t current_thread;
@@ -54,4 +53,5 @@ int control_blocked();
 
 void change_context(int fila, TCB_t *next_thread);
 
+void insert_thread(int fila, TCB_t *new_thread);
 #endif

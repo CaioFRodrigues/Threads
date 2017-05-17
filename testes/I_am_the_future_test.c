@@ -22,16 +22,18 @@
 #include "../include/cthread.h"
 #include <ucontext.h>
 void* func1(void* arg){
-	printf ("OI");
-	return arg;
+	printf ("OIOIOI\n");
+	cyield ();
+	printf ("YAR\n");
+	return 0;
 }
 
 int main(){
-	printf ("OI");
 	int* arg = malloc(sizeof(int));
-
 	ccreate(func1, arg, 0);
-  	
+	printf ("Encerrando main\n");
+	cyield();
+	printf ("IT WORKS!!!Maybe...\n");
 
   return 0;
 }
