@@ -19,8 +19,8 @@
 
 
 // Criação e inicialização da fila de threads
-extern int tidCounter = 1;
-extern int init_flag = 0;
+extern int tidCounter;
+extern int init_flag;
 
 
 void init(){

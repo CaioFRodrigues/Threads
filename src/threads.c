@@ -27,8 +27,8 @@ extern TCB_t current_thread;
 extern ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
 extern FILA2 fila_threads[FILA_SIZE];                        // escolher a próxima
 
-extern int tidCounter; // Thread Identifier Counter
-extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
+int tidCounter = 1; // Thread Identifier Counter
+int init_flag = 0; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
 
 
 //função ccreate (func, arg, prio)
