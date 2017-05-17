@@ -16,14 +16,24 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../internal.h"
-#include "../support.h"
-#include "../cdata.h"
-#include "../cthread.h"
+#include "../include/internal.h"
+#include "../include/support.h"
+#include "../include/cdata.h"
+#include "../include/cthread.h"
+#include <ucontext.h>
+void* func1(void* arg){
+	printf ("OIOIOI\n");
+	cyield ();
+	printf ("YAR\n");
+	return 0;
+}
 
 int main(){
-
-  printf("I am the future test!");
+	int* arg = malloc(sizeof(int));
+	ccreate(func1, arg, 0);
+	printf ("Encerrando main\n");
+	cyield();
+	printf ("IT WORKS!!!Maybe...\n");
 
   return 0;
 }
