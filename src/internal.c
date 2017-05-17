@@ -18,9 +18,7 @@
 #include "../include/internal.h"
 
 
-// Criação e inicialização da fila de threads
-extern int tidCounter;
-extern int init_flag;
+
 
 
 void init(){

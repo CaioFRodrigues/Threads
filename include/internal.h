@@ -38,8 +38,8 @@ TCB_t current_thread;
 ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
 FILA2 fila_threads[FILA_SIZE];                        // escolher a próxima
 
-int tidCounter; // Thread Identifier Counter
-int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
+extern int tidCounter; // Thread Identifier Counter
+extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
 
 
 
