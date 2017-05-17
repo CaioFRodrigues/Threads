@@ -47,7 +47,7 @@ void init();
 
 int control_thread();
 
-void choose_thread();
+int choose_thread();
 
 int control_blocked();
 

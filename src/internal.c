@@ -52,7 +52,7 @@ void init(){
     choose_thread_context.uc_stack.ss_sp = malloc(MEM);
     choose_thread_context.uc_stack.ss_size = MEM;
     choose_thread_context.uc_link = NULL;
-    makecontext(&choose_thread_context, choose_thread, NO_ARGUMENT);
+    makecontext(&choose_thread_context, (void *)choose_thread, NO_ARGUMENT);
 
 
  
@@ -73,7 +73,8 @@ int control_thread(){
 
 
 // Função choose_thread(s_TCB* returning_thread): Escolhe a thread a ser executada a partir da fila de aptos e remove ela da fila;
-void choose_thread(){
+// Retorno: 1 se executou corretamente, 0 se todas as filas estiverem vazias
+int choose_thread(){
 
 	TCB_t * next_thread = (TCB_t *) malloc(sizeof(TCB_t));
 	for (int i = 0; i < FILA_SIZE;i++ )
@@ -85,9 +86,9 @@ void choose_thread(){
 			DeleteAtIteratorFila2(&fila_threads[i]);
 
 			change_context(i, next_thread);
-			return 0;
+			return 1;
 	}
-	printf ("ALGO DEU MUITO ERRADO");
+	return 0;
 }
 
 

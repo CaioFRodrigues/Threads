@@ -31,22 +31,25 @@ extern int tidCounter; // Thread Identifier Counter
 extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
 
 
-
+//função ccreate (func, arg, prio)
+//Cria uma nova thread de prioridade prio com a função func passando arg como argumento
+//Inicializa diversas coisas internas da biblioteca
+//Abdica do controle da thread ao final da função,chamando a próxima no escalonador
+//Retorna -1 se não conseguir criar uma nova thread, e 0 caso consiga
 int ccreate(void *(*start)(void *), void *arg, int prio)
 {
     
-    TCB_t *new_thread = (TCB_t *) malloc(sizeof(TCB_t));
-    ucontext_t *new_thread_context = (ucontext_t *) malloc(sizeof(ucontext_t));
+    TCB_t *new_thread = (TCB_t *) malloc(sizeof(TCB_t)); //Ponteiro para nova thread que será posto na fila
+    ucontext_t *new_thread_context = (ucontext_t *) malloc(sizeof(ucontext_t)); //Ponteiro do contexto da nova thread 
 
-    if(getcontext(new_thread_context) == -1){
+    if(getcontext(new_thread_context) == -1){ //Pega o contexto atual
         return -1;
     }
 
 
     if (init_flag == 0)  //Primeira execução do programa
-    {
         init();
-    }
+    
 
 
     new_thread_context->uc_stack.ss_sp = malloc(MEM);
@@ -56,6 +59,7 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
     new_thread->tid = ++tidCounter;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
     new_thread->context = *new_thread_context;
+
     insert_thread(prio, new_thread);
 
     choose_thread();
@@ -63,8 +67,10 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
     return 0;
 }
 
-
+// Abdica do controle do processador e vai para a próxima thread
+// retorna 0 se deu erro e -1 se ocorreu falha (não havia thread para trocar).
 int cyield(){
-    choose_thread();
-    return 0;
+    if (choose_thread() == 0)
+        return 1;
+    else return -1;
 }
