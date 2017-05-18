@@ -11,7 +11,6 @@
 #define	__INTERNAL_H__
 
 #include <ucontext.h>
-#include "cdata.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ucontext.h>
@@ -19,6 +18,8 @@
 #include "support.h"
 #include "cdata.h"
 #include "cthread.h"
+#include "init.h"
+#include "manager.h"
 
 #define FILA_SIZE 4 
 #define TRUE 1
@@ -33,25 +34,25 @@
 #define FILA_SIZE 4 
 
 
-TCB_t main_thread;
-TCB_t current_thread;
-ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
-FILA2 fila_threads[FILA_SIZE];                        // escolher a próxima
+TCB_t main_thread; // Thread principal
+TCB_t current_thread; //Thread atualmente em execução
+ucontext_t end_thread_context; //Contexto sempre começa no end_thread, já que no final de cada thread é necessário ir para lá
+FILA2 fila_threads[FILA_SIZE]; //Fila de threads
 
 extern int tidCounter; // Thread Identifier Counter
 extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
 
 
+TCB_t * create_thread(void *(*start)(void *), void *arg, int prio);
 
-void init();
+void update_current_thread(TCB_t * next_thread);
 
-int control_thread();
+void swap_context();
 
-int choose_thread();
+void insert_thread_in_fila(TCB_t *new_thread);
+
+TCB_t * get_next_thread();
 
 int control_blocked();
 
-void change_context(int fila, TCB_t *next_thread);
-
-void insert_thread(int fila, TCB_t *new_thread);
 #endif

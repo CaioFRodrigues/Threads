@@ -18,98 +18,81 @@
 #include "../include/internal.h"
 
 
+//Cria uma thread nova com um contexto alocado para a função desejada
+TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
 
+	TCB_t *new_thread = malloc(sizeof(TCB_t)); //Ponteiro para nova thread que será posto na fila
+    ucontext_t *new_thread_context = malloc(sizeof(ucontext_t)); //Ponteiro do contexto da nova thread 
 
+    if(getcontext(new_thread_context) == -1) //Pega o contexto atual
+        return NULL;
 
-void init(){
-	int i;
+   	
+    new_thread_context->uc_stack.ss_sp = malloc(MEM);
+    new_thread_context->uc_stack.ss_size = MEM;
+    new_thread_context->uc_link = &end_thread_context;
+    new_thread->state = PROCST_APTO;
+    new_thread->tid = Random2();
+    makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
+    new_thread->context = *new_thread_context;
 
-	//Garante que não haverão duas inicializações
-    init_flag = 1;
-
-
-    //Inicializa a fila de threads
-    for (i = 0; i < FILA_SIZE; i++){
-		CreateFila2( &(fila_threads[FILA_SIZE]));
-	}	
-
-
-	//Cria um template para a thread
-	ucontext_t *new_thread_context = (ucontext_t *) malloc(sizeof(ucontext_t));
-    getcontext(new_thread_context);
-	//Inicializa a thread principal
-    main_thread.context = *new_thread_context;
-    main_thread.state = PROCST_EXEC;
-    main_thread.tid = 0;
-    main_thread.ticket = 0;
-
-    //Inicializa a thread atual
-    current_thread = main_thread;
- 	
-    //Inicializa o contexto que sempre aponta para choose_thread
-    getcontext(&choose_thread_context);
-    choose_thread_context.uc_stack.ss_sp = malloc(MEM);
-    choose_thread_context.uc_stack.ss_size = MEM;
-    choose_thread_context.uc_link = NULL;
-    makecontext(&choose_thread_context, (void *)choose_thread, NO_ARGUMENT);
-
-
- 
-}
-
-
-//Função control_thread(): Manuseia próxima thread a ser executada e checa a fila de bloqueios
-int control_thread(){	
-	//Decide a próxima thread a ser executada
-
-	choose_thread();
-	return 0;
-
-
-
+    return new_thread;
 
 }
 
 
-// Função choose_thread(s_TCB* returning_thread): Escolhe a thread a ser executada a partir da fila de aptos e remove ela da fila;
-// Retorno: 1 se executou corretamente, 0 se todas as filas estiverem vazias
-int choose_thread(){
+
+
+//Função update_current_thread(): Cria uma cópia da thread atual e a coloca no final da fila de threads
+//Atualiza a thread atual por uma passada por parâmetro
+void update_current_thread(TCB_t * next_thread){
+
+
+	TCB_t * current_thread_copy = malloc(sizeof(TCB_t)); // Cópia da thread atual que será jogada na fila de threads
+	*current_thread_copy = current_thread; //Agora current_thread pode ser alterada, e o último elemento da fila é a thread atual
+	insert_thread_in_fila(current_thread_copy); //Insere a cópia na fila
+ 	current_thread = *next_thread; //Atualiza a thread atual
+
+}
+
+// Função swap_context(): Troca contexto com a thread passado como parâmetro, insere contexto atual no ultimo elemento da fila de threads
+//Além disso, atualiza a current_thread
+void swap_context(){
+
+	LastFila2(&fila_threads[current_thread.ticket]);
+	swapcontext(&(((TCB_t *)(GetAtIteratorFila2(&fila_threads[current_thread.ticket])))->context), &(current_thread.context));
+
+}
+
+
+//Função insert_thread(fila, thread): Insere thread para a fila de número passado como parâmetro
+void insert_thread_in_fila(TCB_t *new_thread){
+
+	AppendFila2(&fila_threads[new_thread->ticket], new_thread);
+
+}
+
+// Função get_next_thread(): Pega a primeira thread da fila, e retorna ela;
+// Retorno: próxima thread a ser executada
+TCB_t * get_next_thread(){
 	int i;
 
-	TCB_t * next_thread = (TCB_t *) malloc(sizeof(TCB_t));
+	
 
 	for (i = 0; i < FILA_SIZE;i++ )
 		if(!FirstFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
 										   //caso não haja na primeira fila, tenta a próxima fila até o final das filas
+			TCB_t * next_thread = (TCB_t *) malloc(sizeof(TCB_t));
 
 			*next_thread = (*(TCB_t *) (GetAtIteratorFila2(&fila_threads[i])));
 
 			DeleteAtIteratorFila2(&fila_threads[i]);
 
-			change_context(i, next_thread);
-			return 1;
+			return next_thread;
 	}
-	return 0;
+	return NULL;
 }
 
 
-// Função change_context(): Insere thread para a fila com número passado por argumento.Troca o contexto para essa fila
-void change_context(int fila, TCB_t *next_thread){
-	TCB_t * current_thread_to_fila = (TCB_t *) malloc(sizeof(TCB_t));  
-	*current_thread_to_fila = current_thread;
-	AppendFila2(&fila_threads[fila], current_thread_to_fila);
-	LastFila2(&fila_threads[fila]);
-	current_thread = *next_thread;
-
-	swapcontext(&(((TCB_t *)(GetAtIteratorFila2(&fila_threads[fila])))->context), &(next_thread->context));
-
-
-}
-
-//Função insert_thread(): Insere thread para a fila passada como parâmetro
-void insert_thread(int fila, TCB_t *new_thread){
-
-	AppendFila2(&fila_threads[fila], new_thread);
-}
-
+//Função control_blocked(): Controla as threads bloqueadas, checando se alguma pode ser liberada com o encerramento da thread atual
 int control_blocked();
