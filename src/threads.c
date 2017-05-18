@@ -45,6 +45,7 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
     if(getcontext(new_thread_context) == -1){ //Pega o contexto atual
         return -1;
     }
+    
 
 
     if (init_flag == 0)  //Primeira execução do programa
@@ -64,7 +65,7 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
 
     choose_thread();
 
-    return 0;
+    return tidCounter;
 }
 
 // Abdica do controle do processador e vai para a próxima thread
@@ -74,3 +75,34 @@ int cyield(){
         return 1;
     else return -1;
 }
+
+
+int csetprio(int tid, int prio){
+
+    int i=0;
+    TCB_t * tested_thread = (TCB_t *) malloc(sizeof(TCB_t));
+
+    for (i=0; i<FILA_SIZE; i++){
+        while (NextFila2(&fila_threads[i]) != 0){   // Enquanto houver threads na fila
+
+            tested_thread = (TCB_t *) (GetAtIteratorFila2(&fila_threads[i]));   //Guardando o conteudo, nao o ponteiro
+
+            if (tested_thread->tid == tid){
+                if (tested_thread->ticket == prio)
+                    return 0;
+
+                tested_thread->ticket = prio;
+                DeleteAtIteratorFila2(&fila_threads[i]);
+                //Muda a thread para a fila apropriada
+                insert_thread(prio, tested_thread);
+                
+                return 0;
+            }
+
+        }
+    }
+
+    return -1;
+
+}
+
