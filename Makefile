@@ -32,8 +32,8 @@ threads.o: $(SRC_DIR)threads.c
 	$(CC) -o $(BIN_DIR)threads.o -c $(SRC_DIR)threads.c -Wall -m32
 
 
-testes.o: $(TST_DIR)I_am_the_future_test.c 	#Dunno if the testes is exactly right
-	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)I_am_the_future_test.c -Wall -m32
+testes.o: $(TST_DIR)test1.c 	#Dunno if the testes is exactly right
+	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)test1.c -Wall -m32
 
 
 clean:

@@ -22,13 +22,14 @@
 
 
 void init(){
+	int i;
 
 	//Garante que não haverão duas inicializações
     init_flag = 1;
 
 
     //Inicializa a fila de threads
-    for (int i = 0; i < FILA_SIZE; i++){
+    for (i = 0; i < FILA_SIZE; i++){
 		CreateFila2( &(fila_threads[FILA_SIZE]));
 	}	
 
@@ -73,9 +74,10 @@ int control_thread(){
 // Função choose_thread(s_TCB* returning_thread): Escolhe a thread a ser executada a partir da fila de aptos e remove ela da fila;
 // Retorno: 1 se executou corretamente, 0 se todas as filas estiverem vazias
 int choose_thread(){
+	int i;
 
 	TCB_t * next_thread = (TCB_t *) malloc(sizeof(TCB_t));
-	for (int i = 0; i < FILA_SIZE;i++ )
+	for (i = 0; i < FILA_SIZE;i++ )
 		if(!LastFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
 										   //caso não haja na primeira fila, tenta a próxima fila até o final das filas
 
