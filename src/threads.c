@@ -65,7 +65,7 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
 
     choose_thread();
 
-    return 0;
+    return tidCounter;
 }
 
 // Abdica do controle do processador e vai para a próxima thread
@@ -92,7 +92,7 @@ int csetprio(int tid, int prio){
                     return 0;
 
                 tested_thread->ticket = prio;
-                DeleteAtIteratorFila2(&fila_tehreads[i]);
+                DeleteAtIteratorFila2(&fila_threads[i]);
                 //Muda a thread para a fila apropriada
                 insert_thread(prio, tested_thread);
                 
