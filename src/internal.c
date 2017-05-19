@@ -32,7 +32,7 @@ TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
     new_thread_context->uc_stack.ss_size = MEM;
     new_thread_context->uc_link = &end_thread_context;
     new_thread->state = PROCST_APTO;
-    new_thread->tid = Random2();
+    new_thread->tid = ++tid_counter;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
     new_thread->context = *new_thread_context;
 
@@ -65,7 +65,7 @@ void swap_context(){
 }
 
 
-//Função insert_thread(fila, thread): Insere thread para a fila de número passado como parâmetro
+//Função insert_thread(thread): Insere thread para a fila dela
 void insert_thread_in_fila(TCB_t *new_thread){
 
 	AppendFila2(&fila_threads[new_thread->ticket], new_thread);
