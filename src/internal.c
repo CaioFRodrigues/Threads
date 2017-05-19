@@ -30,6 +30,7 @@ TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
     new_thread_context->uc_stack.ss_sp = malloc(MEM);
     new_thread_context->uc_stack.ss_size = MEM;
     new_thread_context->uc_link = &end_thread_context;
+    new_thread->ticket = prio;
     new_thread->state = PROCST_APTO;
     new_thread->tid = tid_counter++;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
@@ -43,21 +44,20 @@ TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
 
 //Função update_current_thread(): Cria uma cópia da thread atual e a coloca no final da fila de threads
 //Atualiza a thread atual por uma passada por parâmetro
-void update_current_thread(TCB_t * next_thread){
+//Retorna o valor da fila da thread anterior, para seu contexto ser salvo posteriormente
+int update_current_thread(TCB_t * next_thread){
 
 	TCB_t * current_thread_copy = malloc(sizeof(TCB_t)); // Cópia da thread atual que será jogada na fila de threads
 	*current_thread_copy = current_thread; //Agora current_thread pode ser alterada, e o último elemento da fila é a thread atual
 	insert_thread_in_fila(current_thread_copy); //Insere a cópia na fila
  	current_thread = *next_thread; //Atualiza a thread atual
-
+ 	return current_thread_copy->ticket;
 }
 
-// Função swap_context(): Troca contexto com a thread passado como parâmetro, insere contexto atual no ultimo elemento da fila de threads
-//Além disso, atualiza a current_thread
-void swap_context(){
-
-	LastFila2(&fila_threads[current_thread.ticket]);
-	swapcontext(&(((TCB_t *)(GetAtIteratorFila2(&fila_threads[current_thread.ticket])))->context), &(current_thread.context));
+// Função swap_context(fila): Troca o contexto da thread para o current_thread, e salva o contexto atual na fila passada como parâmetro
+void swap_context(int fila){
+	LastFila2(&fila_threads[fila]);
+	swapcontext(&(((TCB_t *)(GetAtIteratorFila2(&fila_threads[fila])))->context), &(current_thread.context));
 
 }
 
@@ -76,7 +76,7 @@ TCB_t * get_next_thread(){
 
 	for (i = 0; i < FILA_SIZE;i++ )
 		if(!FirstFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
-										   //caso não haja na primeira fila, tenta a próxima fila até o final das filas
+							   //caso não haja na primeira fila, tenta a próxima fila até o final das filas
 			TCB_t * next_thread = (TCB_t *) malloc(sizeof(TCB_t));
 
 			*next_thread = (*(TCB_t *) (GetAtIteratorFila2(&fila_threads[i])));

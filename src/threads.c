@@ -60,22 +60,17 @@ int csetprio(int tid, int prio){
 
     int i=0;
     TCB_t * tested_thread = (TCB_t *) malloc(sizeof(TCB_t));
-    printf("\nCHEGOU AQUI 1\n");
     int j =0;
     for (i=0; i<FILA_SIZE; i++){
-        while (NextFila2(&fila_threads[i]) == 0){   // Enquanto houver threads na fila
-            printf("\nCHEGOU AQUI NO WHILE LOL j = %d\n", j);
-            printf("\ni = %i\n", i);
+        int cur = FirstFila2(&fila_threads[i]);
+
+        while(cur == 0){   // Enquanto houver threads na fila
             j++;
-            tested_thread = (TCB_t *) (GetAtIteratorFila2(&fila_threads[i]));   //Guardando o conteudo, nao o ponteiro
-            printf("\nFEZ O GET TREM DOIDO\n");
+            *tested_thread = *((TCB_t *) (GetAtIteratorFila2(&fila_threads[i])));   //Guardando o conteudo, nao o ponteiro
             if (tested_thread->tid == tid){
-                printf("\nCHEGOU TESTED THREAD j = %d\n", j);
                 if (tested_thread->ticket == prio){
-                    printf("\nCHEGOU AQUI NO TICKET LOL j = %d\n", j);
                     return 0;
                 }
-                printf("\nVAI DELETA O ITERADOR LOL j = %d\n", j);
 
                 tested_thread->ticket = prio;
                 DeleteAtIteratorFila2(&fila_threads[i]);
@@ -84,6 +79,7 @@ int csetprio(int tid, int prio){
                 
                 return 0;
             }
+            cur = NextFila2(&fila_threads[i]);
 
         }
     }
