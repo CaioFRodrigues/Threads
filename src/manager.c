@@ -20,8 +20,18 @@
 
 //Função control_thread(): Manuseia próxima thread a ser executada e checa a fila de bloqueios
 void end_thread(){	
+	//Controla fila de bloqueios
+	blocked_TCB * blocked_thread = search_block_fila(current_thread.tid);
+
+	if (blocked_thread != NULL){
+
+		TCB_t *copy_blocked_thread = malloc(sizeof(TCB_t)); //Cria cópia para não perder o ponteiro ao deletá-lo da fila
+		*copy_blocked_thread = blocked_thread->thread;
+		DeleteAtIteratorFila2(&fila_blocked);
+		insert_thread_in_fila(copy_blocked_thread);
 
 
+	}
 	//Decide a próxima thread a ser executada
 	TCB_t * next_thread = get_next_thread();
 	current_thread = *next_thread;

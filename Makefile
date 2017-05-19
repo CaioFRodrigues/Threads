@@ -37,9 +37,9 @@ init.o: $(SRC_DIR)init.c
 manager.o: $(SRC_DIR)manager.c
 	$(CC) -o $(BIN_DIR)manager.o -c $(SRC_DIR)manager.c $(CONDITIONS)
 
-
+	
 testes.o: $(TST_DIR)I_am_the_future_test.c 	#Dunno if the testes is exactly right
-	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)test_with_csetprio.c $(CONDITIONS)
+	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)i_should_have_joined_centuries_ago.c $(CONDITIONS)
 
 bloc.o: $(SRC_DIR)bloc_fila.c
 	$(CC) -o $(BIN_DIR)bloc.o -c $(SRC_DIR)bloc_fila.c $(CONDITIONS)

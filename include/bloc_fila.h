@@ -16,7 +16,7 @@
 #include "internal.h"
 
 void insert_block_fila(TCB_t * thread, int waited_tid);
-int free_thread();
+blocked_TCB * search_block_fila(int tid);
 
 
 #endif

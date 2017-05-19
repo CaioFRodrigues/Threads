@@ -58,33 +58,41 @@ int cyield(){
 
 int csetprio(int tid, int prio){
 
-    int i=0;
-    TCB_t * tested_thread = (TCB_t *) malloc(sizeof(TCB_t));
-    int j =0;
-    for (i=0; i<FILA_SIZE; i++){
-        int cur = FirstFila2(&fila_threads[i]);
-
-        while(cur == 0){   // Enquanto houver threads na fila
-            j++;
-            *tested_thread = *((TCB_t *) (GetAtIteratorFila2(&fila_threads[i])));   //Guardando o conteudo, nao o ponteiro
-            if (tested_thread->tid == tid){
-                if (tested_thread->ticket == prio){
-                    return 0;
-                }
-
-                tested_thread->ticket = prio;
-                DeleteAtIteratorFila2(&fila_threads[i]);
-                //Muda a thread para a fila apropriada
-                insert_thread_in_fila(tested_thread);
+    TCB_t * searched_thread = search_fila_thread(tid);
+    if (searched_thread == 0)
+        return -1;
+    TCB_t * copy_thread = malloc(sizeof(TCB_t));
+    *copy_thread = *searched_thread;
+    DeleteAtIteratorFila2(&fila_threads[searched_thread->ticket]);
+    
+    copy_thread->ticket = prio;
+    //Muda a thread para a fila apropriada
+    insert_thread_in_fila(copy_thread);
                 
-                return 0;
-            }
-            cur = NextFila2(&fila_threads[i]);
+    return 0;
+            
+            
 
-        }
-    }
-
-    return -1;
+        
 
 }
 
+int cjoin(int tid){
+    TCB_t * thread = search_tid(tid);
+    if (thread == NULL)
+        return -1;
+
+    TCB_t * current_thread_copy = malloc(sizeof(TCB_t)); // Cópia da thread atual que será jogada na fila de threads
+    *current_thread_copy = current_thread; //Agora current_thread pode ser alterada, e o último elemento da fila é a thread atual
+    insert_block_fila(current_thread_copy, tid);
+
+
+
+
+    TCB_t * next_thread = get_next_thread();
+    current_thread = *next_thread;
+    LastFila2(&fila_blocked);
+
+    swapcontext(&(((blocked_TCB *) GetAtIteratorFila2(&fila_blocked))->thread.context) ,&(current_thread.context));
+    return 0;
+}

@@ -26,11 +26,24 @@ void insert_block_fila(TCB_t * thread, int expected_tid){
 	blocked_thread->thread = *thread;
 
 	AppendFila2(&fila_blocked, blocked_thread);
-
 }
 
+//Função search_block_fila(tid): Procura uma thread na lista de bloqueados pelo tid e retorna um ponteiro para a estrutura contendo ela
+//O iterador da fila estará sobre ela também, bastando usar DeleteAtIteratorFila2() para eliminar ela
+//Retorna NULL se a thread não estiver na fila de bloqueados
+//Para acessar a thread em si, usar search_block_fila(tid)->thread
+//NOTA: A THREAD DENTRO DA ESTRUTURA NÃO É UM PONTEIRO
+blocked_TCB * search_block_fila(int tid){
+	blocked_TCB * current_thread;
+	int cur = FirstFila2(&fila_blocked); //Inicializa o loop
+	while (cur == 0){  
 
-TCB_t * control_block_fila(){
-	TCB_t * thread = malloc(sizeof(TCB_t));
+		current_thread = (blocked_TCB *) GetAtIteratorFila2(&fila_blocked); //Pega a thread do iterador atual
 
+		if (current_thread->expected_tid == tid)  // Se a busca foi encontrada
+			return current_thread;
+		
+		cur = NextFila2(&fila_blocked); //Checa se existe algo na próxima posição da fila
+	}
+	return NULL;
 }

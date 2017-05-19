@@ -20,6 +20,7 @@
 #include "cthread.h"
 #include "init.h"
 #include "manager.h"
+#include "bloc_fila.h"
 
 #define FILA_SIZE 4 
 #define TRUE 1
@@ -54,6 +55,8 @@ void insert_thread_in_fila(TCB_t *new_thread);
 
 TCB_t * get_next_thread();
 
-int control_blocked();
+TCB_t * search_fila_thread(int tid);
+
+TCB_t * search_tid(int tid);
 
 #endif
