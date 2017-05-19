@@ -2,7 +2,6 @@
 
 # Pastas com os arquivos de suporte
 bin/**
-include/cdata.h
 include/cthread.h
 include/support.h
 exec
