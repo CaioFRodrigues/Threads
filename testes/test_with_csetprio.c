@@ -49,6 +49,7 @@ int main(){
 	int* arg = malloc(sizeof(int));
 	int tid[3];
 	tid[0] = ccreate(func1, arg, 0);
+	csetprio(1,1);
 	tid[1] = ccreate(func2, arg, 0);
 	tid[2] = ccreate(func3, arg, 0);
 	printf("func1 tid: %d\n", tid[0]);

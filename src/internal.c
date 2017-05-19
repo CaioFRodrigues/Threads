@@ -26,18 +26,16 @@ TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
 
     if(getcontext(new_thread_context) == -1) //Pega o contexto atual
         return NULL;
-
    	
     new_thread_context->uc_stack.ss_sp = malloc(MEM);
     new_thread_context->uc_stack.ss_size = MEM;
     new_thread_context->uc_link = &end_thread_context;
     new_thread->state = PROCST_APTO;
-    new_thread->tid = ++tid_counter;
+    new_thread->tid = tid_counter++;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
     new_thread->context = *new_thread_context;
 
     return new_thread;
-
 }
 
 
@@ -46,7 +44,6 @@ TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
 //Função update_current_thread(): Cria uma cópia da thread atual e a coloca no final da fila de threads
 //Atualiza a thread atual por uma passada por parâmetro
 void update_current_thread(TCB_t * next_thread){
-
 
 	TCB_t * current_thread_copy = malloc(sizeof(TCB_t)); // Cópia da thread atual que será jogada na fila de threads
 	*current_thread_copy = current_thread; //Agora current_thread pode ser alterada, e o último elemento da fila é a thread atual
@@ -76,8 +73,6 @@ void insert_thread_in_fila(TCB_t *new_thread){
 // Retorno: próxima thread a ser executada
 TCB_t * get_next_thread(){
 	int i;
-
-	
 
 	for (i = 0; i < FILA_SIZE;i++ )
 		if(!FirstFila2(&fila_threads[i])){  //Coloca o iterador para o primeiro da fila de thread
