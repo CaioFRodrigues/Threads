@@ -39,7 +39,7 @@ TCB_t current_thread; //Thread atualmente em execução
 ucontext_t end_thread_context; //Contexto sempre começa no end_thread, já que no final de cada thread é necessário ir para lá
 FILA2 fila_threads[FILA_SIZE]; //Fila de threads
 
-extern int tidCounter; // Thread Identifier Counter
+extern int tid_counter; // Thread Identifier Counter
 extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
 
 

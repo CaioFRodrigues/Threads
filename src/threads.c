@@ -20,13 +20,10 @@
 #include "../include/cdata.h"
 #include "../include/cthread.h"
 
-extern TCB_t main_thread;
-extern TCB_t current_thread;
-extern ucontext_t choose_thread_context; //Contexto sempre começa no choose_thread, então no final de cada thread é necessário ir para lá
-extern FILA2 fila_threads[FILA_SIZE];                        // escolher a próxima
+
 
 int init_flag = 0; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca já foi iniciada
-
+int tid_counter = 1;
 
 //função ccreate (func, arg, prio)
 //Cria uma nova thread de prioridade prio com a função func passando arg como argumento
