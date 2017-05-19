@@ -5,7 +5,7 @@ bin/**
 include/cdata.h
 include/cthread.h
 include/support.h
-
+exec
 # Pasta com o .a
 lib/**
 

@@ -32,7 +32,7 @@ TCB_t * create_thread(void *(*start)(void *), void *arg, int prio){
     new_thread_context->uc_stack.ss_size = MEM;
     new_thread_context->uc_link = &end_thread_context;
     new_thread->state = PROCST_APTO;
-    new_thread->tid = ++tid_counter;
+    new_thread->tid = tid_counter++;
     makecontext(new_thread_context, (void (*) (void)) start, 1, arg);
     new_thread->context = *new_thread_context;
 

@@ -19,8 +19,8 @@ TST_DIR=./testes/
 CONDITIONS=-Wall -m32
 all: regra1
 
-regra1: internal.o semaforo.o threads.o testes.o init.o manager.o
-	$(CC) -o exec $(BIN_DIR)internal.o $(BIN_DIR)semaforo.o $(BIN_DIR)init.o $(BIN_DIR)threads.o $(BIN_DIR)/manager.o $(BIN_DIR)support.o $(BIN_DIR)testes.o $(CONDITIONS)
+regra1: internal.o semaforo.o threads.o testes.o init.o manager.o bloc.o
+	$(CC) -o exec $(BIN_DIR)internal.o $(BIN_DIR)semaforo.o $(BIN_DIR)init.o $(BIN_DIR)bloc.o $(BIN_DIR)threads.o $(BIN_DIR)/manager.o $(BIN_DIR)support.o $(BIN_DIR)testes.o $(CONDITIONS)
 
 internal.o: $(SRC_DIR)internal.c
 	$(CC) -o $(BIN_DIR)internal.o -c $(SRC_DIR)internal.c $(CONDITIONS)
@@ -40,7 +40,8 @@ manager.o: $(SRC_DIR)manager.c
 testes.o: $(TST_DIR)I_am_the_future_test.c 	#Dunno if the testes is exactly right
 	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)I_am_the_future_test.c $(CONDITIONS)
 
-
+bloc.o: $(SRC_DIR)bloc_fila.c
+	$(CC) -o $(BIN_DIR)bloc.o -c $(SRC_DIR)bloc_fila.c $(CONDITIONS)
 
 clean:
-	rm -rf $(LIB_DIR)/*.a $(BIN_DIR)/internal.o $(BIN_DIR)/init.o $(BIN_DIR)/manager.o  $(BIN_DIR)/semaforo.o $(BIN_DIR)/threads.o $(BIN_DIR)/testes.o $(SRC_DIR)/*~ $(INC_DIR)/*~ *~ 
+	rm -rf $(LIB_DIR)/*.a $(BIN_DIR)/internal.o $(BIN_DIR)/bloc.o $(BIN_DIR)/init.o $(BIN_DIR)/manager.o  $(BIN_DIR)/semaforo.o $(BIN_DIR)/threads.o $(BIN_DIR)/testes.o $(SRC_DIR)/*~ $(INC_DIR)/*~ *~ 

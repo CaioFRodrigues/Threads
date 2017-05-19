@@ -45,6 +45,7 @@ void init_fila(){
 	//Inicializa cada fila de threads
 	for (i = 0; i < FILA_SIZE; i++) 
 		CreateFila2( &(fila_threads[FILA_SIZE])); 
+    CreateFila2(&fila_blocked);
 }
 
 

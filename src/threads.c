@@ -44,7 +44,7 @@ int ccreate(void *(*start)(void *), void *arg, int prio)
 
     free_thread();
 
-    return new_thread->ticket;
+    return new_thread->tid;
 }
 
 // Abdica do controle do processador e vai para a próxima thread
