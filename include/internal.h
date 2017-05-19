@@ -46,9 +46,9 @@ extern int init_flag; // 0 - Biblioteca ainda não foi iniciada; 1 - Biblioteca 
 
 TCB_t * create_thread(void *(*start)(void *), void *arg, int prio);
 
-void update_current_thread(TCB_t * next_thread);
+int update_current_thread(TCB_t * next_thread);
 
-void swap_context();
+void swap_context(int fila);
 
 void insert_thread_in_fila(TCB_t *new_thread);
 

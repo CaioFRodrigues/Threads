@@ -33,13 +33,14 @@ void end_thread(){
 //Função free_thread(): Coloca a thread atual na fila de threads, e coloca a primeira thread da fila em execução 
 int free_thread(){
 	TCB_t * next_thread = get_next_thread();
-	
+
 	if (next_thread == NULL)
 		return -1;
+	int current_thread_ticket;
 
-	update_current_thread(next_thread);
+	current_thread_ticket = update_current_thread(next_thread);
 
-	swap_context(next_thread);
+	swap_context(current_thread_ticket);
 
 	return 0;
 }

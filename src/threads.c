@@ -60,15 +60,17 @@ int csetprio(int tid, int prio){
 
     int i=0;
     TCB_t * tested_thread = (TCB_t *) malloc(sizeof(TCB_t));
-
+    int j =0;
     for (i=0; i<FILA_SIZE; i++){
-        while (NextFila2(&fila_threads[i]) != 0){   // Enquanto houver threads na fila
+        int cur = FirstFila2(&fila_threads[i]);
 
-            tested_thread = (TCB_t *) (GetAtIteratorFila2(&fila_threads[i]));   //Guardando o conteudo, nao o ponteiro
-
+        while(cur == 0){   // Enquanto houver threads na fila
+            j++;
+            *tested_thread = *((TCB_t *) (GetAtIteratorFila2(&fila_threads[i])));   //Guardando o conteudo, nao o ponteiro
             if (tested_thread->tid == tid){
-                if (tested_thread->ticket == prio)
+                if (tested_thread->ticket == prio){
                     return 0;
+                }
 
                 tested_thread->ticket = prio;
                 DeleteAtIteratorFila2(&fila_threads[i]);
@@ -77,6 +79,7 @@ int csetprio(int tid, int prio){
                 
                 return 0;
             }
+            cur = NextFila2(&fila_threads[i]);
 
         }
     }

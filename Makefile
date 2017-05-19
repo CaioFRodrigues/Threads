@@ -37,11 +37,13 @@ init.o: $(SRC_DIR)init.c
 manager.o: $(SRC_DIR)manager.c
 	$(CC) -o $(BIN_DIR)manager.o -c $(SRC_DIR)manager.c $(CONDITIONS)
 
+
 testes.o: $(TST_DIR)I_am_the_future_test.c 	#Dunno if the testes is exactly right
-	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)I_am_the_future_test.c $(CONDITIONS)
+	$(CC) -o $(BIN_DIR)testes.o -c $(TST_DIR)test_with_csetprio.c $(CONDITIONS)
 
 bloc.o: $(SRC_DIR)bloc_fila.c
 	$(CC) -o $(BIN_DIR)bloc.o -c $(SRC_DIR)bloc_fila.c $(CONDITIONS)
+
 
 clean:
 	rm -rf $(LIB_DIR)/*.a $(BIN_DIR)/internal.o $(BIN_DIR)/bloc.o $(BIN_DIR)/init.o $(BIN_DIR)/manager.o  $(BIN_DIR)/semaforo.o $(BIN_DIR)/threads.o $(BIN_DIR)/testes.o $(SRC_DIR)/*~ $(INC_DIR)/*~ *~ 
